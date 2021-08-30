@@ -186,6 +186,7 @@ section {
   line-height: 1.5;
   text-align: center;
   margin-bottom: 30px;
+  padding: 5px;
 }
 .avatar-title {
   display: none;
@@ -242,7 +243,7 @@ section {
     padding: 0 10px;
   }
   .avatar-expert .avatar-img {
-    height: 130px;
+    height: 220px;
   }
   .avatar-div.avatar-expert {
     width: calc(100% / 3);
@@ -260,12 +261,8 @@ section {
 .partner-item,
 .client-item {
   display: inline-block;
-  height: 50px;
+  height: 75px;
   padding: 0 30px;
-  background-image: url("../assets/images/partners/te.png");
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: contain;
   opacity: 0.8;
   margin-bottom: 50px;
 }

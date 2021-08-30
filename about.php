@@ -1,3 +1,6 @@
+<?php 
+  require_once('./config/db.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -121,69 +124,73 @@
             <div class="staff-list">
                 <h1 class="about-title"><div class="line"></div><span class="background: #292929;">LEADERS</span><div class="line"></div></h1>
                 <div class="row about-bio-leader">
-                    <div class="avatar-div avatar-leader">
-                        <div class="avatar-img" style="background-image: url(./assets/images/staff/white_boss_3.jpg);"></div>
-                        <div class="avatar-name">Nguyễn Thanh Trung</div>
-                        <div class="avatar-title">Founder</div>
-                        <div class="avatar-office">Chairman</div>
-                        <a href="#">Download CV</a>
-                    </div>
-                    <div class="avatar-div avatar-leader">
-                        <div class="avatar-img" style="background-image: url(./assets/images/staff/white_boss_3.jpg);"></div>
-                        <div class="avatar-name">Nguyễn Thanh Trung</div>
-                        <div class="avatar-title">Founder</div>
-                        <div class="avatar-office">Chairman</div>
-                        <a href="#">Download CV</a>
-                    </div>
-                    <div class="avatar-div avatar-leader">
-                        <div class="avatar-img" style="background-image: url(./assets/images/staff/white_boss_3.jpg);"></div>
-                        <div class="avatar-name">Nguyễn Thanh Trung</div>
-                        <div class="avatar-title">Founder</div>
-                        <div class="avatar-office">Chairman</div>
-                        <a href="#">Download CV</a>
-                    </div>   
+                    <?php 
+                     $sql = "SELECT * FROM tb_staff";
+                     $res = mysqli_query($conn, $sql);
+                     $count = mysqli_num_rows($res);
+                     $res1 = $res;
+                       if($count>0)
+                       {
+                         while($row=mysqli_fetch_assoc($res))
+                         {
+                             if($row['type'] == "founder")
+                                echo '
+                                <div class="avatar-div avatar-leader">
+                                    <div class="avatar-img" style="background-image: url('.substr($row['link_image'],1).');"></div>
+                                    <div class="avatar-name">'.$row['name'].'</div>
+                                    <div class="avatar-title">Founder</div>
+                                    <div class="avatar-office">'.$row['office'].'</div>
+                                </div>
+                                ';
+                         }
+                      }
+                    ?>
                 </div>
                 <h1 class="about-title"><div class="line"></div><span class="background: #292929;">EXPERTS</span><div class="line"></div></h1>
                 <div class="row about-bio-expert">
-                    <div class="avatar-div avatar-expert">
-                        <div class="avatar-img" style="background-image: url(./assets/images/staff/white_boss_3.jpg);"></div>
-                        <div class="avatar-name">Nguyễn Thanh Trung</div>
-                      
-                        <div class="avatar-office">Chairman</div>
-                    </div>
-                    <div class="avatar-div avatar-expert">
-                        <div class="avatar-img" style="background-image: url(./assets/images/staff/white_boss_3.jpg);"></div>
-                        <div class="avatar-name">Nguyễn Thanh Trung</div>
-                      
-                        <div class="avatar-office">Chairman</div>
-                    </div>
-                    <div class="avatar-div avatar-expert">
-                        <div class="avatar-img" style="background-image: url(./assets/images/staff/white_boss_3.jpg);"></div>
-                        <div class="avatar-name">Nguyễn Thanh Trung</div>
-                      
-                        <div class="avatar-office">Chairman</div>
-                    </div>
+                <?php 
+                 $sql = "SELECT * FROM tb_staff";
+                 $res = mysqli_query($conn, $sql);
+                 $count = mysqli_num_rows($res);
+                 $res1 = $res;
+                if($count>0)
+                       {
+                         while($row=mysqli_fetch_assoc($res))
+                         {
+                             if($row['type'] == "expert")
+                                echo '
+                                <div class="avatar-div avatar-expert">
+                                    <div class="avatar-img" style="background-image: url('.substr($row['link_image'],1).');"></div>
+                                    <div class="avatar-name">'.$row['name'].'</div>
+                                    <div class="avatar-office">'.$row['office'].'</div>
+                                </div>
+                                ';
+                         }
+                      }
+                ?>
                 </div>
                 <div class="line"></div>
                 <div class="row about-bio-staff">
-                    <div class="avatar-div">
-                        <div class="avatar-img" style="background-image: url(./assets/images/staff/white_boss_3.jpg);"></div>
-                        <div class="avatar-name">Nguyễn Thanh Trung</div>
-                      
-                        <div class="avatar-office">Chairman</div>
-                    </div>
-                    <div class="avatar-div">
-                        <div class="avatar-img" style="background-image: url(./assets/images/staff/white_boss_3.jpg);"></div>
-                        <div class="avatar-name">Nguyễn Thanh Trung</div>
-                      
-                        <div class="avatar-office">Chairman</div>
-                    </div>
-                    <div class="avatar-div">
-                        <div class="avatar-img" style="background-image: url(./assets/images/staff/white_boss_3.jpg);"></div>
-                        <div class="avatar-name">Nguyễn Thanh Trung</div>
-                      
-                        <div class="avatar-office">Chairman</div>
-                    </div>
+                <?php 
+                 $sql = "SELECT * FROM tb_staff";
+                 $res = mysqli_query($conn, $sql);
+                 $count = mysqli_num_rows($res);
+                 $res1 = $res;
+                if($count>0)
+                       {
+                         while($row=mysqli_fetch_assoc($res))
+                         {
+                             if($row['type'] == "staff")
+                                echo '
+                                <div class="avatar-div">
+                                    <div class="avatar-img" style="height:180px;background-image: url('.substr($row['link_image'],1).');"></div>
+                                    <div class="avatar-name">'.$row['name'].'</div>
+                                    <div class="avatar-office">'.$row['office'].'</div>
+                                </div>
+                                ';
+                         }
+                      }
+                ?>
                 </div>
             </div>
         </div>
@@ -195,11 +202,26 @@
         <div class="wrap-940">
             <h1 class="about-title"><div class="line"></div><span class="background: #292929;">PARTNERS</span><div class="line"></div></h1>
             <div class="row">
-                <a href="#" class="partner-item"></a>
-                <a href="#" class="partner-item"></a>
-                <a href="#" class="partner-item"></a>
-                <a href="#" class="partner-item"></a>
-                <a href="#" class="partner-item"></a>
+            <?php 
+                 $sql = "SELECT * FROM tb_branch";
+                 $res = mysqli_query($conn, $sql);
+                 $count = mysqli_num_rows($res);
+                 $res1 = $res;
+                if($count>0)
+                       {
+                         while($row=mysqli_fetch_assoc($res))
+                         {
+                             if($row['type'] == 0)
+                                echo '
+                                <span  class="partner-item" style="background:url(\''.substr($row['link_image'],1).'\');
+                                background-position: center center;
+                                background-repeat: no-repeat;
+                                background-size: contain;"></span>
+                                ';
+                         }
+                      }
+                ?>
+            
             </div>
         </div>
     </section>
@@ -209,16 +231,25 @@
         <div class="wrap-940">
             <h1 class="about-title"><div class="line"></div><span class="background: #292929;">clientS</span><div class="line"></div></h1>
             <div class="row">
-                <a href="#" class="client-item"></a>
-                <a href="#" class="client-item"></a>
-                <a href="#" class="client-item"></a>
-                <a href="#" class="client-item"></a>
-                <a href="#" class="client-item"></a>
-                <a href="#" class="client-item"></a>
-                <a href="#" class="client-item"></a>
-                <a href="#" class="client-item"></a>
-                <a href="#" class="client-item"></a>
-                <a href="#" class="client-item"></a>
+            <?php 
+                 $sql = "SELECT * FROM tb_branch";
+                 $res = mysqli_query($conn, $sql);
+                 $count = mysqli_num_rows($res);
+                 $res1 = $res;
+                if($count>0)
+                       {
+                         while($row=mysqli_fetch_assoc($res))
+                         {
+                             if($row['type'] == 1)
+                                echo '
+                                <span  class="client-item" style="background:url(\''.substr($row['link_image'],1).'\');
+                                background-position: center center;
+                                background-repeat: no-repeat;
+                                background-size: contain;"></span>
+                                ';
+                         }
+                      }
+                ?>
             </div>
         </div>
     </section>

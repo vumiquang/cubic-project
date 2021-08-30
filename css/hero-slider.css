@@ -79,7 +79,11 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 950px) {
+  .slider-product .hero {
+    width: 70vw;
+    margin: 0 auto;
+  }
 }
 @media only screen and (max-width: 767px) {
   .slider-img {

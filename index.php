@@ -1,3 +1,6 @@
+<?php 
+  require_once('./config/db.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -31,14 +34,33 @@
     <!-- Slider -->
     <section class="slider">
       <div class="hero">
-        <div class="hero-item">
-          <img src="./assets/images/banner/img1.jpeg" alt="song long" />
-          <a href="#">Dragon palace</a>
-        </div>
-        <div class="hero-item">
-          <img src="./assets/images/banner/img2.jpeg" alt="song long" />
-          <a href="#">Dragon palace</a>
-        </div>
+        <?php 
+            $sql = "SELECT DISTINCT tb_project.id,tb_project.name,tb_project_image.link_image FROM tb_project,tb_project_image where tb_project.id = tb_project_image.id_project group by tb_project.id limit 5";
+            $res = mysqli_query($conn, $sql);
+            $count = mysqli_num_rows($res);
+
+            if($count>0)
+            {
+                while($row=mysqli_fetch_assoc($res))
+                {
+                    $id = $row['id'];
+                    $link_img = $row['link_image'];
+                    if($link_img == ""){
+                      $link_img = "./assets/images/empty.png";
+                    }
+                    $name = $row['name'];
+                    echo '<div class="hero-item">
+                    <img src="'.$link_img.'" />
+                    <a href="project-detail.php?id='.$id.'">'.$name.'</a>
+                  </div>';
+                }
+            }else{
+              $link_img = "./assets/images/empty.png";
+              echo '<div class="hero-item">
+              <img src="'.$link_img.'" />
+            </div>';
+            }
+          ?>
       </div>
       <img
         src="./assets/images/cubic_logo_white_green-p-500x285.png"
@@ -52,15 +74,31 @@
       <div class="news">
         <div class="title"><h1>NEWS</h1></div>
         <div class="posts">
-        <?php 
-        //  $news_link = 
-        //  $news_img=
-        //  $news_type=
-        //  $news_desc=
-          for($i = 0;$i < 15;$i++){
-              include('./component/news-item.php');
-          } 
-        ?>
+          <?php 
+              $sql = "SELECT 
+              tb_news.id,
+              tb_news.news_image,
+              tb_news_type.name,
+              tb_news.title
+               FROM tb_news,tb_news_type WHERE tb_news.id_type = tb_news_type.id limit 18";
+              $res = mysqli_query($conn, $sql);
+              $count = mysqli_num_rows($res);
+
+              if($count>0)
+              {
+                  while($row=mysqli_fetch_assoc($res))
+                  {
+                      $news_id = $row['id'];
+                      $news_img = $row['news_image'];
+                      if($news_img == ""){
+                        $news_img = "./assets/images/empty.png";
+                      }
+                      $news_type = $row['name'];
+                      $news_desc = $row['title'];
+                      include('./component/news-item.php');
+                  }
+              }
+            ?>
         </div>
       </div>
       <div class="center"><a href="news.php"><button class="btn-read-more">Read more</button></a></div>
@@ -69,13 +107,52 @@
     <!-- Post -->
     <section class="section-project">
       <div class="projects">
+     
+      <?php 
+            $sql = "SELECT DISTINCT tb_project.id,tb_project_image.link_image,tb_project.address,tb_project.name  FROM tb_project left join tb_project_image on tb_project.id = tb_project_image.id_project group by tb_project.id limit 15";
+            $res = mysqli_query($conn, $sql);
+            $count = mysqli_num_rows($res);
 
-        <?php 
-        $item_title = "Quang Binh";
-        $item_address = "Quang Binh province";
-        for($i = 0;$i < 15;$i++){
-          include('./component/project-item.php');
-        } ?>
+            if($count>0)
+            {   
+              for($i = 0 ;$i < ($count+2);$i++){
+                if($i == 1) {
+                  echo ' <div class="project-item project-item-text">
+                          <a href="#">
+                            <div class="project-text">featured <br />project</div>
+                          </a>
+                      </div>';
+                }
+                else if($i == ($count)){
+                  echo ' <div class="project-item project-item-text">
+                  <a href="#">
+                    <div class="project-text">Cubic</div>
+                  </a>
+                </div>
+                ';
+                }
+                else{
+                  $row=mysqli_fetch_assoc($res);
+                  $id = $row['id'];
+                  $item_link = 'project-detail.php?id='.$id;
+                  $item_img = $row['link_image'];
+                  if($item_img == ""){
+                    $item_img = "./assets/images/empty.png";
+                  } 
+                  $item_zoom = true;
+                  $item_border = "0";
+                  $item_radius = "0";
+                  $item_info = "true";
+                  $item_address = $row['address'];
+                  $item_title = $row['name'];
+                  $item_filter = true;
+
+                  include('./component/project-item.php');
+                }
+              }              
+            }
+          ?>
+         
       </div>
     </section>
     <!-- //Post -->

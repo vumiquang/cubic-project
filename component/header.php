@@ -1,3 +1,5 @@
+
+
 <header>
       <nav class="nav">
         <ul class="menu">
@@ -27,11 +29,23 @@
             class="sub-menu dropdown-project active"
             style="transition: opacity 400ms ease 0s; opacity: 0; display: none"
           >
-            <li><span>Lorem, ipsum.</span></li>
-            <li><a href="#">Lorem.</a></li>
-            <li><a href="#">Lorem</a></li>
-            <li><a href="#">Lorem</a></li>
-            <li><a href="#">Lorem</a></li>
+          <li><span>By project status: </span></li>
+          <?php 
+                $sql = "SELECT * FROM tb_project_status";
+                $res = mysqli_query($conn, $sql);
+                $count = mysqli_num_rows($res);
+
+                if($count>0)
+                {
+                    while($row=mysqli_fetch_assoc($res))
+                    {
+                        $id = $row['id'];
+                        $name = $row['name'];
+                        echo '<li><a href="projects.php?status='.$id.'" >'.$name.'</a></li>';
+                      }
+                }
+              ?>
+           
           </ul>
           <ul
             class="sub-menu dropdown-about"
@@ -48,11 +62,24 @@
             class="sub-menu dropdown-news"
             style="transition: opacity 400ms ease 0s; opacity: 0; display: none"
           >
-            <li><span>News.</span></li>
-            <li><a href="#">Lorem.</a></li>
-            <li><a href="#">Lorem</a></li>
-            <li><a href="#">Lorem</a></li>
-            <li><a href="#">Lorem</a></li>
+            <li><span>By type:</span></li>
+            <?php 
+                $sql = "SELECT * FROM tb_news_type";
+                $res = mysqli_query($conn, $sql);
+                $count = mysqli_num_rows($res);
+
+                if($count>0)
+                {
+                  
+                    while($row=mysqli_fetch_assoc($res))
+                    {
+                      // echo '<script>  alert(0)</script>';
+                        $id = $row['id'];
+                        $name = $row['name'];
+                        echo '<li><a href="news.php?type='.$id.'" >'.$name.'</a></li>';
+                    }
+                }
+              ?>
           </ul>
         </div>
         <div class="toggle-menu"><a href="#"><img src="./assets/images/cubic_logo_notext_128.png" alt=""></a><span><i class="fas fa-bars"></i></span></div>

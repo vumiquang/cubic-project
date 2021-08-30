@@ -1,3 +1,6 @@
+<?php 
+  require_once('./config/db.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -25,11 +28,53 @@
     <?php include(__DIR__.'/component/header.php')?>
     <!-- //Header -->
     <div class="head-logo"><a href="index.php"><img src="./assets/images/cubic_logo_dark_glow_2.png" alt="logo"></a></div>
+    <?php 
+    if(!isset($_GET['id'])){
+      die();  
+    }
+    ?>
+     <?php 
+       $sql = "SELECT 
+       tb_news.title,tb_news.time,tb_news.content,tb_news.news_image,tb_news_type.name,tb_account.username,tb_news_type.id as idtype
+       FROM tb_news 
+       left join tb_news_type on tb_news_type.id = tb_news.id_type 
+       left join tb_account on tb_account.id = tb_news.id_account
+       where tb_news.id =".$_GET['id'];
+      
+       $res = mysqli_query($conn, $sql);
+       $count = mysqli_num_rows($res);
+
+       $author = "";
+        $title ="";
+        $time ="";
+        $content ="";
+        $type = "";
+        $id_type = "";
+        $news_img = "";
+       if($count>0)
+       {
+           $row=mysqli_fetch_assoc($res);
+           global $author ;
+          global $title ;
+          global $time ;
+          global $content ;
+          global $type ;
+          global $id_type ;
+          global $img;
+           $author = $row['username'];
+           $title =$row['title'];
+           $time =$row['time'];
+           $content =$row['content'];
+           $type = $row['name'];
+           $id_type = $row['idtype'];
+            $news_img = $row['news_image'];
+       }
+      ?>
     <!-- Bread-crum -->
     <div class="bread-crum mb-30">
       <div class="wrap-940">
         <div class="row">
-          <a href="news.php" class="yellow-text">Cubic Architects</a> > <a href="news.php" class="yellow-text">News</a> > <span>Crowne Plaza Phu Quoc - Construction site</span>
+          <a href="news.php" class="yellow-text">Cubic Architects</a> > <a href="news.php?type=<?php echo $id_type;?>" class="yellow-text"><?php echo $type; ?></a> > <span><?php echo $title; ?></span>
         </div>
       </div>
     </div>
@@ -38,21 +83,41 @@
     <section class="news-detail mb-50">
       <div class="wrap-940">
         <div>
-          <h1 class="mb-20">Crowne Plaza Phu Quoc - Construction site</h1>
-          <div class="news-time mb-20"><span>12/06/2019</span> | by <span>Cubic</span></div>
+          <h1 class="mb-20"><?php echo $title; ?></h1>
+          <div class="news-time mb-20"><span><?php echo $time; ?></span> | by <span><?php echo $author; ?></span></div>
           <div class="news-content">
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reiciendis cupiditate, 
-              optio placeat delectus excepturi ducimus nemo aut earum natus impedit sit ipsum 
-              eos assumenda voluptatibus reprehenderit velit ipsam consequatur voluptates?
-            </p>
+            <?php echo $content; ?>
+            <div>
+            <img src="<?php echo substr($news_img,1); ?>" alt="" style="width:100%;height:auto;">
+            </div>
           </div>
         </div>
         <div class="col-highlight">
           <h2 class="news-title mt-80" style="padding-left: 20px;">Highlight</h2>
           <div class="posts posts-column">
-            <?php 
-              for($i = 0; $i < 3;$i++){
-                include('./component/news-item.php');
+          <?php 
+              $sql = "SELECT 
+              tb_news.id,
+              tb_news.news_image,
+              tb_news_type.name,
+              tb_news.title
+               FROM tb_news,tb_news_type WHERE tb_news.id_type = tb_news_type.id order by tb_news.time DESC limit 3";
+              $res = mysqli_query($conn, $sql);
+              $count = mysqli_num_rows($res);
+
+              if($count>0)
+              {
+                  while($row=mysqli_fetch_assoc($res))
+                  {
+                      $news_id = $row['id'];
+                      $news_img = $row['news_image'];
+                      if($news_img == ""){
+                        $news_img = "./assets/images/empty.png";
+                      }
+                      $news_type = $row['name'];
+                      $news_desc = $row['title'];
+                      include('./component/news-item.php');
+                  }
               }
             ?>
           </div>
@@ -66,11 +131,31 @@
       <div>
         <h2 class="news-title mt-80" style="padding-left: 20px;">Relative news</h2>
         <div class="posts posts-3">
-              <?php
-                for($i = 0; $i < 3;$i++){
-                  include('./component/news-item.php');
-                }
-              ?>
+        <?php 
+              $sql = "SELECT 
+              tb_news.id,
+              tb_news.news_image,
+              tb_news_type.name,
+              tb_news.title
+               FROM tb_news,tb_news_type WHERE tb_news.id_type = tb_news_type.id and tb_news.id <> ".$_GET['id']." limit 3";
+              $res = mysqli_query($conn, $sql);
+              $count = mysqli_num_rows($res);
+
+              if($count>0)
+              {
+                  while($row=mysqli_fetch_assoc($res))
+                  {
+                      $news_id = $row['id'];
+                      $news_img = $row['news_image'];
+                      if($news_img == ""){
+                        $news_img = "./assets/images/empty.png";
+                      }
+                      $news_type = $row['name'];
+                      $news_desc = $row['title'];
+                      include('./component/news-item.php');
+                  }
+              }
+            ?>
         </div>
       </div>
       </div>

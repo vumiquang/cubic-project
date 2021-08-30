@@ -103,9 +103,15 @@ button {
 .yellow-text {
   color: var(--yellow);
 }
+.hidden {
+  display: none !important;
+}
 @media only screen and (max-width: 1200px) {
   .wrap-940 {
     padding: 0 10px;
+  }
+  .wrap-959 {
+    padding: 0 20px;
   }
 }
 @media only screen and (max-width: 767px) {

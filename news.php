@@ -1,3 +1,6 @@
+<?php 
+  require_once('./config/db.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -30,15 +33,33 @@
     <!-- All News -->
     <section class="all-news mb-50 mt-30">
       <div class="posts">
-        <?php 
-        //  $news_link = 
-        //  $news_img=
-        //  $news_type=
-        //  $news_desc=
-          for($i = 0;$i < 15;$i++){
-              include('./component/news-item.php');
-          } 
-        ?>
+      <?php 
+              $sql = "SELECT 
+              tb_news.id,
+              tb_news.news_image,
+              tb_news_type.name,
+              tb_news.title,
+              tb_news.id_type 
+               FROM tb_news,tb_news_type WHERE tb_news.id_type = tb_news_type.id";
+              $res = mysqli_query($conn, $sql);
+              $count = mysqli_num_rows($res);
+
+              if($count>0)
+              {
+                  while($row=mysqli_fetch_assoc($res))
+                  {
+                      $news_id = $row['id'];
+                      $news_id_type = $row['id_type'];
+                      $news_img = $row['news_image'];
+                      if($news_img == ""){
+                        $news_img = "./assets/images/empty.png";
+                      }
+                      $news_type = $row['name'];
+                      $news_desc = $row['title'];
+                      include('./component/news-item.php');
+                  }
+              }
+            ?>
       </div>
     </section>
     <!-- //All News -->
@@ -48,6 +69,6 @@
     <script src="./assets/js/jquery-3.2.1.slim.min.js"></script>
     <script src="./js/nav.js"></script>
     <script src="./assets/js/slick.min.js"></script>
-    
+    <script src="./js/news-search.js"></script>
   </body>
 </html>
